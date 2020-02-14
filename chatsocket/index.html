@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket io node js</title>
+    <style media="screen">
+        form {
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            background: green;
+            padding: 20px;
+        }
+        li:nth-child(even){
+            background: #333;
+            color:white;
+        }
+        #nama_user {
+            float: left; width: 20%; height: 30px; border: none;
+        }
+        #text_box {
+            float: left; width: 40%; height: 30px; border: none; margin-left: 10px;
+        }
+        button {
+            float: left; width: 20%; height: 33px;
+        }
+    </style>
+</head>
+<body>
+    <ul id="messages"></ul>
+
+    <form>
+        <input type="text" id="nama_user" placeholder="nama kamu">
+        <input type="text" id="text_box" placeholder="Chat kamu"> <button> Kirim </button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        var socket = io();
+        var username = "";
+
+        $("form").submit(function(){
+            username = $("#nama_user").val();
+            socket.emit('newMessage', username + " " +$("#text_box").val());
+            $("#text_box").val("");
+            return false;
+        });
+
+        // untuk menampilkan fronted
+        socket.on("newMessage", function(msg){
+            $("#messages").append($("<li>").text(msg + " ||pada: " + Date()));
+        });
+    </script>
+</body>
+</html>
